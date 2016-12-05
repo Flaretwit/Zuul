@@ -9,9 +9,10 @@
 
 class Item() {
 	public:
-		Item();
+		Item(char*, char*);
 		virtual ~Item();
 		char* getDescription();
+		char* getName();
 	protected:
 		char* description;
 
