@@ -9,8 +9,8 @@ class Room {
 		virtual ~Room();
 		vector<Item*> *storage = new vector<Item*>();
 		Map<int, Room> exits = new Map<int, Room>();
-		void setExit(int direction, Room room);
-		
+		void setExit(int direction, Room room);	
+		bool contains(Item *item);
 	private:
 		char* description;
 		char* name;
