@@ -6,9 +6,10 @@
 using namespace std;
 
 
-Item::Item() {
+Item::Item(char* newname, char* newdescription) {
 	description = new char[80];
 	name = new char[80];
+	name =
 }
 
 char* Item::getDescription() {
@@ -18,6 +19,5 @@ char* Item::getDescription() {
 char* Item::getName() {
 	return name;
 }
-
 
 

@@ -1,28 +1,81 @@
-//room.cpp
-#include <vector>	
+nclude "Room.h"
 #include <iostream>
-#include "room.h"
-	
+#include <string.h>
+#include <map>
+#include <vector>
+
 using namespace std;
-//the room constructor
-Room::Room(char* name, char* description) {
-	this.name = name;
-	this.description = description;
+
+const int NORTH = 1;
+const int SOUTH = -1;
+const int EAST = 2;
+const int WEST = -2;
+const int UP = 3;
+const int DOWN = -3;
+
+Room::Room(char* newName) {
+  name = newName;
 }
 
-void Room::setExit(int direction, Room room) {
-	exits[direction] = room;
+char* Room::getName() {
+  return name;
 }
 
-Room Room::getExit(int direction) {
-	return (Room) exits.get(direction);
-}
-//checks if the room contains such item
-bool Room::contains(Item *item) {
-	for(int i = 0; i < sizeof(storage); i++) {
-		if(!strcmp(storage->at(i)->name, item->name))
-			return true;
-	}
-	return false;
+Room* Room::getExit(int exit) {
+  map<int, Room*>::iterator it = exitMap.find(exit);
+  if (it != exitMap.end())
+    return exitMap.find(exit)->second;
+  return NULL;
 }
 
+void Room::setExit(int direction, Room* nextRoom) {
+  exitMap[direction] = nextRoom;
+}
+
+void Room::addItem(Item* newItem) {
+  itemList.push_back(newItem);
+}
+
+Item* Room::removeItem(char* itemName) {
+  for (int i = 0; i < itemList.size(); i++) {
+    if (strcasecmp(itemName, itemList.at(i)->name) == 0) {
+      Item* returnedItem = itemList.at(i);
+      itemList.erase(itemList.begin() + i);
+      return returnedItem;
+    }
+  }
+  return NULL;
+}
+
+bool Room::hasItems() {
+  if (itemList.empty())
+    return false;
+  return true;
+}
+
+void Room::printRoom() {
+  cout << name << endl << endl << "Items: " << endl;
+  for (int i = 0; i < itemList.size(); i++)
+    cout << itemList.at(i)->name << endl;
+  cout << endl << "Exits: " << endl;
+  for (map<int, Room*>::iterator it = exitMap.begin(); it != exitMap.end(); it++) {
+    int exit = it->first;
+    if (exit == NORTH)
+      cout << "north" << endl;
+    else if (exit == SOUTH)
+      cout << "south" << endl;
+    else if (exit == EAST)
+      cout << "east" << endl;
+    else if (exit == WEST)
+      cout << "west" << endl;
+    else if (exit == UP)
+      cout << "up" << endl;
+    else if (exit == DOWN)
+      cout << "down" << endl;
+  }
+  cout << endl;
+}
+
+void Room::setName(char* newName) {
+  name = newName;
+}

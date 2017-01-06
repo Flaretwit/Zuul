@@ -14,6 +14,7 @@ class Item() {
 		char* getDescription();
 		char* getName();
 	protected:
+		char* name;
 		char* description;
 
 }

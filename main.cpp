@@ -16,11 +16,51 @@ int main() {
 	vector<Item*> inventory = new vector<Item*>();
 	vector<Room*> rooms = new vector<Room*>();
 	bool done = false;
-
-	start = currentRoom
+	cout << "Welcome to Zuul Adventure, a C++ version of Zuul in Java << endl;
+	
+	Room* start = new Room("You are in a lobby. The alarms appear to be activated. You hear footsteps. What do you do, you are being captured. Escape while you still can!");
+	Room *closet = new Room("Seems like any old janitorial closet, or is it?");
+	Room *foodstorage = new Room("Looks like you're in the pantry of a restaurant. Lots of yummy food");
+	Room *supplyroom = new Room("There's a lot of tools in here. Don't hurt anyone!");
+	Room *corridor = new Room("A corridor that connects two far away doors. The ceiling looks awfullly fragile");
+	Room *employee = new Room("A door with a keycard scanner looms before you. Its quite big. Ramming into it doesn't seem to help though. You'll need a keycard.");
+	Room *wait2 = new Room("An area that has nothing, wait, really?");
+	Room *wait1 = new Room("This area seems littered with items, why is it so messy?");
+	Room *restroom = new Room("A nicely clean bathroom. Don't worry, the bathroom is unisex.");
+	Room *stall1 = new Room("The first stall in the bathroom, cramped and dirty. Who would to use this at all?");
+	Room *stall2 = new Room("The second stall in the bathroom, very spacious. However, it contains nothing in it at all but a toilet.");
+	Room *stall3 = new Room("The third stall, there's no toilet in here?!?");
+	Room *diningTables = new Room ("Looks like a nice set of tables. They belong the restaurant that they connect to. You can't take these!");
+	Room *pub = new Room("Are you over 21? If so, head over to the bar to get a drink!");
+	Room *bar = new Room("A bar. There appears to be no barman, however.");
+	Room *resetarea = new Room("A nice lounge area for the employees of the restaurant. There can't be anything in here, silly!");
+	start.setExit(0, closet);
+	start.setExit(3, foodstorage);
+	start.setExit(2, supplyroom);
+	start.setExit(1, corridor);
+	closet.setExit(2, start);
+	foodstorage.setExit(1, start);
+	supplyroom.setExit(0, start);
+	corridor.setExit(3, start);
+	corridor.setExit(1, employee);
+	employee.setExit(3, corridor);
+	employee.setExit(1, wait2);
+	wait2.setExit(3, employee);
+	wait2.setExit(2, wait1);
+	wait1.setExit(0, wait2);
+	wait1.setExit(2, diningTables);
+	diningTables.setExit(0, wait1);
+	diningTables.setExit(1, restroom);
+	restroom.setExit(3, diningTables);
+	restroom.setExit(0, stall1);
+	restroom.setExit(1, stall2);
+	restroom.setExit(2, stall3);
+	stall1.setExit(2, restroom);
+	stall2.setExit(3, restroom);
+	stall3.setExit(0, restroom);
+	Room* currentRoom = start;	
 	while(!done) {
-		Room currentRoom;
-		cout << "What do you want to do? (WHEREAMI, EXIT, GO, PICKUP, DROP)" << endl;
+	cout << "What do you want to do? (WHEREAMI, EXIT, GO, PICKUP, DROP)" << endl;
 	}
 	return 0;
 
