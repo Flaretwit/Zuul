@@ -5,24 +5,24 @@
 #include <vector>
 
 using namespace std;
-//Struct item which holds only its name and nothing else.
+//Item struct that only has the variable name
 struct Item {
   char* name;
 };
-//Define Room's members and functions.
+//Defines Room's variables and methods
+
 class Room {
  public:
-  Room(char* newName);
+  Room(char*, char*);
   char* getName();
+ char* getDescription();
   Room* getExit(int exit);
   void setExit(int direction, Room* nextRoom);
   void addItem(Item* newItem);
   Item* removeItem(char* itemName);
   bool hasItems();
-  void printRoom();
-  void setName(char* newName);
-  
  private:
+  char* description;
   char* name;
   map<int, Room*> exitMap;
   vector<Item*> itemList;

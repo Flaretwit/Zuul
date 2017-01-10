@@ -4,13 +4,12 @@
 using namespace std;
 
 int parseCommand(char* input);
-
+int pickUp
 #define WHEREAMI 1
 #define EXITS 2
 #define GO 3
 #define PICKUP 4
 #define DROP 5
-#define 
 
 int main() {
 	vector<Item*> inventory = new vector<Item*>();
@@ -33,7 +32,7 @@ int main() {
 	Room *diningTables = new Room ("Looks like a nice set of tables. They belong the restaurant that they connect to. You can't take these!");
 	Room *pub = new Room("Are you over 21? If so, head over to the bar to get a drink!");
 	Room *bar = new Room("A bar. There appears to be no barman, however.");
-	Room *resetarea = new Room("A nice lounge area for the employees of the restaurant. There can't be anything in here, silly!");
+	Room *restarea = new Room("A nice lounge area for the employees of the restaurant. There can't be anything in here, silly!");
 	start.setExit(0, closet);
 	start.setExit(3, foodstorage);
 	start.setExit(2, supplyroom);
@@ -51,6 +50,7 @@ int main() {
 	wait1.setExit(2, diningTables);
 	diningTables.setExit(0, wait1);
 	diningTables.setExit(1, restroom);
+	diningTables.setExit(2, pub);
 	restroom.setExit(3, diningTables);
 	restroom.setExit(0, stall1);
 	restroom.setExit(1, stall2);
@@ -58,15 +58,42 @@ int main() {
 	stall1.setExit(2, restroom);
 	stall2.setExit(3, restroom);
 	stall3.setExit(0, restroom);
+	pub.setExit(0, diningTables);
+	pub.setExit(3, restarea);
+	restarea.setExit(1, pub);
+	rooms.add(start);
+	rooms.add(closet);
+	rooms.add(foodstorage);
+	rooms.add(supplyroom);
+	rooms.add(corridor);
+	rooms.add(employee);
+	rooms.add(wait2);
+	rooms.add(wait1);
+	rooms.add(diningTables);
+	rooms.add(restroom);
+	rooms.add(stall1);
+	rooms.add(stall2);
+	rooms.add(stall3);
+	rooms.add(pub);
+	rooms.add(restarea);
 	Room* currentRoom = start;	
 	while(!done) {
-	cout << "What do you want to do? (WHEREAMI, EXIT, GO, PICKUP, DROP)" << endl;
+		cout << "What do you want to do/know? (WHEREAMI, EXITS, GO, PICKUP, DROP)" << endl;
+		char* input[80];
+		cin >> input;
+		switch(parseCommand(input)) {
+			case WHERAMI:
+				cout << currentRoom->getName() << endl;
+				break;
+			case EXITS:
+				for(int i = 0; i < 4; i++) {
+	
+		}
 	}
 	return 0;
 
 }
-
-void pickUp
+//if requested item is present, removes item from the room and adds it to inventory 
 
 //parses the command
 int parseCommand(char* input) {
