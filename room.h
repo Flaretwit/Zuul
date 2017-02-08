@@ -15,7 +15,7 @@ class Room {
  public:
   Room(char*, char*);
   char* getName();
- char* getDescription();
+  char* getDescription();
   Room* getExit(int exit);
   void setExit(int direction, Room* nextRoom);
   void addItem(Item* newItem);

@@ -1,4 +1,5 @@
-include "Room.h"
+
+#include "room.h"
 #include <iostream>
 #include <string.h>
 #include <map>
@@ -21,10 +22,10 @@ char* Room::getDescription() {
  return description;
 }
 Room* Room::getExit(int exit) {
-  map<int, Room*>::iterator it = exitMap.find(exit);
-  if (it != exitMap.end())
-    return exitMap.find(exit)->second;
-  return NULL;
+ map<int, Room*>::iterator it = exitMap.find(exit);
+ if (it != exitMap.end())  
+  return exitMap.find(exit)->second;
+ return NULL;
 }
 
 void Room::setExit(int direction, Room* nextRoom) {
