@@ -8,7 +8,6 @@
 //Contains methods outlined in Room.h
 using namespace std;
 
-
 Room::Room(char* newName, char* newDescription) {
  name = newName;
  description = newDescription;
@@ -23,7 +22,7 @@ char* Room::getDescription() {
 }
 Room* Room::getExit(int exit) {
  map<int, Room*>::iterator it = exitMap.find(exit);
- if (it != exitMap.end())  
+ if (it != exitMap.end())
   return exitMap.find(exit)->second;
  return NULL;
 }

@@ -11,13 +11,13 @@ using namespace std;
 #define DROP 5
 
 int parseCommand(char* input);
-void goRoom(Room* currentRoom);
+void goRoom(Room*& currentRoom);
 int main() {
 	vector<Item*> inventory;
 	vector<Room*> rooms;
 	bool done = false;
 	cout << "Welcome to Zuul Adventure, a C++ version of Zuul in Java" << endl;
-	
+
 	Room* start = new Room("Lobby", "You are in a lobby. The alarms appear to be activated. You hear footsteps. What do you do, you are being captured. Escape while you still can!");
 	Room *closet = new Room("The Closet", "Seems like any old janitorial closet, or is it?");
 	Room *foodstorage = new Room("Pantry", "Looks like you're in the pantry of a restaurant. Lots of yummy food");
@@ -77,7 +77,7 @@ int main() {
 	rooms.push_back(stall3);
 	rooms.push_back(pub);
 	rooms.push_back(restarea);
-	Room* currentRoom = start;	
+	Room* currentRoom = start;
 	while(!done) {
 		cout << "What do you want to do/know? (WHEREAMI, EXITS, GO, PICKUP, DROP)" << endl;
 		char* input = new char[80];
@@ -105,14 +105,15 @@ int main() {
 	return 0;
 
 }
-//if requested item is present, removes item from the room and adds it to inventory 
-void goRoom(Room* currentRoom) {
+//if requested item is present, removes item from the room and adds it to inventory
+void goRoom(Room*& currentRoom) {
 	char* input = new char[8];
 		cout << "Which direction (N, E, S, W)  would you like to go?" << flush;
 		cin >> input;
 		if(!strcmp(input, "N")) {
 			currentRoom = currentRoom->getExit(0);
 			cout << "Executed";
+			cout << currentRoom->getName() << endl;
 		}
 		else if(!strcmp(input, "E")) {
 			currentRoom = currentRoom->getExit(1);
@@ -130,7 +131,7 @@ void goRoom(Room* currentRoom) {
 int parseCommand(char* input) {
 	for(int i = 0; i < strlen(input); i++) {
 		input[i] = toupper(input[i]);
-	} 
+	}
 	if(!strcmp(input, "WHEREAMI"))
 		return WHEREAMI;
 	else if(!strcmp(input, "EXITS"))
