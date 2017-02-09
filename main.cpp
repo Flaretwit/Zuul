@@ -17,6 +17,7 @@ int main() {
 	vector<Room*> rooms;
 	bool done = false;
 	cout << "Welcome to Zuul Adventure, a C++ version of Zuul in Java" << endl;
+	cout << "You have twenty turns to get to the exit, but where is it?" << endl;
 
 	Room* start = new Room("Lobby", "You are in a lobby. The alarms appear to be activated. You hear footsteps. What do you do, you are being captured. Escape while you still can!");
 	Room *closet = new Room("The Closet", "Seems like any old janitorial closet, or is it?");
@@ -77,9 +78,29 @@ int main() {
 	rooms.push_back(stall3);
 	rooms.push_back(pub);
 	rooms.push_back(restarea);
+	Item* keycard = new Item();
+	Item* fishingtwine = new Item();
+	strcpy(keycard->name, "Keycard");
+	strcpy(fishingtwine->name, "Fishing Twine");
+
+	int turncount = 0;
 	Room* currentRoom = start;
+	cout << currentRoom->getDescription() << endl;
 	while(!done) {
-		cout << "What do you want to do/know? (WHEREAMI, EXITS, GO, PICKUP, DROP)" << endl;
+		//checks conditions for win or loss.
+		if(turncount >= 20) {
+			cout << "You lost! Time expired and you were captured!" >> endl;
+			cout << "Score: FAILURE" << endl;
+			break;
+		}
+		if(!strcmp(currentRoom->getExit(1)->getName(), "Door with Dangerous Looking Scanner")
+			&& !containsItem("Key Card")) {
+				cout << "You lost! You were fried by the laser!" << endl;
+				break;
+		}
+		if(currentRoom
+		cout << "Turn: " << turncount << endl;
+		cout << "What do you want to do/know? (WHEREAMI, 	EXITS, GO, PICKUP, DROP)" << endl;
 		char* input = new char[80];
 		cin >> input;
 		switch(parseCommand(input)) {
@@ -98,22 +119,35 @@ int main() {
 				}
 				break;
 			case GO:
-				goRoom(currentRoom);
+				if!(goRoom(currentRoom)) {
+					break;
+				}
+				cout << currentRoom->getDescription() << endl;
+				turncount++;
 				break;
 		}
 	}
 	return 0;
 
 }
+//checks if inventory contains said item.
+bool Room::containsItem(v) {
+  for (int i = 0; i < inventory.size(); i++) {
+    if (!strcasecmp(itemName, itemList.at(i)->name)) {
+      Item* returnedItem = itemList.at(i);
+      itemList.erase(itemList.begin() + i);
+      return returnedItem;
+    }
+  }
+}
 //if requested item is present, removes item from the room and adds it to inventory
-void goRoom(Room*& currentRoom) {
+int goRoom(Room*& currentRoom) {
 	char* input = new char[8];
 		cout << "Which direction (N, E, S, W)  would you like to go?" << flush;
 		cin >> input;
 		if(!strcmp(input, "N")) {
 			currentRoom = currentRoom->getExit(0);
-			cout << "Executed";
-			cout << currentRoom->getName() << endl;
+			cout <<
 		}
 		else if(!strcmp(input, "E")) {
 			currentRoom = currentRoom->getExit(1);
@@ -124,6 +158,7 @@ void goRoom(Room*& currentRoom) {
 		else if(!strcmp(input, "W")) {
 			currentRoom = currentRoom->getExit(3);
 		}
+
 	cin.ignore();
 	delete input;
 }
