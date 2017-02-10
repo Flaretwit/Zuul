@@ -12,6 +12,7 @@ using namespace std;
 
 int parseCommand(char* input);
 void goRoom(Room*& currentRoom);
+bool containsItem(char* itemName, vector<Item*> inventory);
 int main() {
 	vector<Item*> inventory;
 	vector<Room*> rooms;
@@ -80,8 +81,20 @@ int main() {
 	rooms.push_back(restarea);
 	Item* keycard = new Item();
 	Item* fishingtwine = new Item();
-	strcpy(keycard->name, "Keycard");
-	strcpy(fishingtwine->name, "Fishing Twine");
+	Item* cup = new Item();
+	Item* plate = new Item();
+	Item* card = new Item();
+
+	card->name == "Card";
+	cup->name, "Cup";
+	plate->name, "Plate";
+	keycard->name, "Keycard";
+	fishingtwine->name, "Fishing Twine";
+	closet->addItem(keycard);
+	closet->addItem(cup);
+	supplyroom->addItem(keycard);
+	diningTables->addItem(plate);
+	foodstorage->addItem(fishingtwine);
 
 	int turncount = 0;
 	Room* currentRoom = start;
@@ -89,16 +102,19 @@ int main() {
 	while(!done) {
 		//checks conditions for win or loss.
 		if(turncount >= 20) {
-			cout << "You lost! Time expired and you were captured!" >> endl;
+			cout << "You lost! Time expired and you were captured!" << endl;
 			cout << "Score: FAILURE" << endl;
 			break;
 		}
 		if(!strcmp(currentRoom->getExit(1)->getName(), "Door with Dangerous Looking Scanner")
-			&& !containsItem("Key Card")) {
+			&& !containsItem("Key Card", inventory)) {
 				cout << "You lost! You were fried by the laser!" << endl;
 				break;
 		}
-		if(currentRoom
+		if(!strcmp(currentRoom->getName(), "Pub")) {
+			cout << "You won the game in " << turncount << " turns!"<<endl;
+			break;
+		}
 		cout << "Turn: " << turncount << endl;
 		cout << "What do you want to do/know? (WHEREAMI, 	EXITS, GO, PICKUP, DROP)" << endl;
 		char* input = new char[80];
@@ -119,9 +135,7 @@ int main() {
 				}
 				break;
 			case GO:
-				if!(goRoom(currentRoom)) {
-					break;
-				}
+				goRoom(currentRoom);
 				cout << currentRoom->getDescription() << endl;
 				turncount++;
 				break;
@@ -131,23 +145,21 @@ int main() {
 
 }
 //checks if inventory contains said item.
-bool Room::containsItem(v) {
+bool containsItem(char* itemName, vector<Item*> inventory) {
   for (int i = 0; i < inventory.size(); i++) {
-    if (!strcasecmp(itemName, itemList.at(i)->name)) {
-      Item* returnedItem = itemList.at(i);
-      itemList.erase(itemList.begin() + i);
-      return returnedItem;
+    if (!strcasecmp(itemName, inventory.at(i)->name)) {
+    	return true;
     }
   }
+	return false;
 }
 //if requested item is present, removes item from the room and adds it to inventory
-int goRoom(Room*& currentRoom) {
-	char* input = new char[8];
+void goRoom(Room*& currentRoom) {
+	char* input;
 		cout << "Which direction (N, E, S, W)  would you like to go?" << flush;
 		cin >> input;
 		if(!strcmp(input, "N")) {
 			currentRoom = currentRoom->getExit(0);
-			cout <<
 		}
 		else if(!strcmp(input, "E")) {
 			currentRoom = currentRoom->getExit(1);
@@ -160,7 +172,6 @@ int goRoom(Room*& currentRoom) {
 		}
 
 	cin.ignore();
-	delete input;
 }
 //parses the command
 int parseCommand(char* input) {
