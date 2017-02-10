@@ -99,6 +99,8 @@ int main() {
 	int turncount = 0;
 	Room* currentRoom = start;
 	cout << currentRoom->getDescription() << endl;
+
+	cout << "sysout" << currentRoom->getExit(0)->getName() <<endl;
 	while(!done) {
 		//checks conditions for win or loss.
 		if(turncount >= 20) {
@@ -116,7 +118,7 @@ int main() {
 			break;
 		}
 		cout << "Turn: " << turncount << endl;
-		cout << "What do you want to do/know? (WHEREAMI, 	EXITS, GO, PICKUP, DROP)" << endl;
+		cout << "What do you want to do/know? (WHEREAMI, EXITS, GO, PICKUP, DROP)" << endl;
 		char* input = new char[80];
 		cin >> input;
 		switch(parseCommand(input)) {
