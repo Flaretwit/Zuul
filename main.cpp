@@ -20,22 +20,22 @@ int main() {
 	cout << "Welcome to Zuul Adventure, a C++ version of Zuul in Java" << endl;
 	cout << "You have twenty turns to get to the exit, but where is it?" << endl;
 
-	Room* start = new Room("Lobby", "You are in a lobby. The alarms appear to be activated. You hear footsteps. What do you do, you are being captured. Escape while you still can!");
-	Room *closet = new Room("The Closet", "Seems like any old janitorial closet, or is it?");
-	Room *foodstorage = new Room("Pantry", "Looks like you're in the pantry of a restaurant. Lots of yummy food");
-	Room *supplyroom = new Room("Supply room", "There's a lot of tools in here. Don't hurt anyone!");
-	Room *corridor = new Room("Corridor", "A corridor that connects two far away doors. The ceiling looks awfullly fragile");
-	Room *employee = new Room("Door with Dangerous Looking Scanner", "A door with a keycard scanner looms before you. Its quite big. Ramming into it doesn't seem to help though. You'll need a keycard.");
-	Room *wait2 = new Room("The Only Waiting Area", "An area that has nothing, wait, really?");
-	Room *wait1 = new Room("The One and Only Waiting Area", "This area seems littered with items, why is it so messy?");
-	Room *restroom = new Room("Restroom", "A nicely clean bathroom. Don't worry, the bathroom is unisex.");
-	Room *stall1 = new Room("Stall 1", "The first stall in the bathroom, cramped and dirty. Who would to use this at all?");
-	Room *stall2 = new Room("Stall 2", "The second stall in the bathroom, very spacious. However, it contains nothing in it at all but a toilet.");
-	Room *stall3 = new Room("Stall 3", "The third stall, there's no toilet in here?!?");
-	Room *diningTables = new Room ("Dining Room with Tables", "Looks like a nice set of tables. They belong the restaurant that they connect to. You can't take these!");
-	Room *pub = new Room("Pub", "Are you over 21? If so, head over to the bar to get a drink!");
-	Room *bar = new Room("Bar", "A bar. There appears to be no barman, however.");
-	Room *restarea = new Room("Lounge Area", "A nice lounge area for the employees of the restaurant. There can't be anything in here, silly!");
+	Room* start = new Room((char*)"Lobby",(char*) "You are in a lobby. The alarms appear to be activated. You hear footsteps. What do you do, you are being captured. Escape while you still can!");
+	Room *closet = new Room((char*)"The Closet",(char*) "Seems like any old janitorial closet, or is it?");
+	Room *foodstorage = new Room((char*)"Pantry",(char*) "Looks like you're in the pantry of a restaurant. Lots of yummy food");
+	Room *supplyroom = new Room((char*)"Supply room",(char*) "There's a lot of tools in here. Don't hurt anyone!");
+	Room *corridor = new Room((char*)"Corridor",(char*) "A corridor that connects two far away doors. The ceiling looks awfullly fragile");
+	Room *employee = new Room((char*)"Door with Dangerous Looking Scanner",(char*) "A door with a keycard scanner looms before you. Its quite big. Ramming into it doesn't seem to help though. You'll need a keycard.");
+	Room *wait2 = new Room((char*)"The Only Waiting Area",(char*) "An area that has nothing, wait, really?");
+	Room *wait1 = new Room((char*)"The One and Only Waiting Area",(char*) "This area seems littered with items, why is it so messy?");
+	Room *restroom = new Room((char*)"Restroom",(char*) "A nicely clean bathroom. Don't worry, the bathroom is unisex.");
+	Room *stall1 = new Room((char*)"Stall 1",(char*) "The first stall in the bathroom, cramped and dirty. Who would to use this at all?");
+	Room *stall2 = new Room((char*)"Stall 2",(char*) "The second stall in the bathroom, very spacious. However, it contains nothing in it at all but a toilet.");
+	Room *stall3 = new Room((char*)"Stall 3", (char*)"The third stall, there's no toilet in here?!?");
+	Room *diningTables = new Room ((char*)"Dining Room with Tables",(char*) "Looks like a nice set of tables. They belong the restaurant that they connect to. You can't take these!");
+	Room *pub = new Room((char*)"Pub",(char*) "Are you over 21? If so, head over to the bar to get a drink!");
+	Room *bar = new Room((char*)"Bar",(char*) "A bar. There appears to be no barman, however.");
+	Room *restarea = new Room((char*)"Lounge Area",(char*) "A nice lounge area for the employees of the restaurant. There can't be anything in here, silly!");
 	start->setExit(0, closet);
 	start->setExit(3, foodstorage);
 	start->setExit(2, supplyroom);
@@ -109,7 +109,7 @@ int main() {
 			break;
 		}
 		if(!strcmp(currentRoom->getExit(1)->getName(), "Door with Dangerous Looking Scanner")
-			&& !containsItem("Key Card", inventory)) {
+			&& !containsItem((char*)"Key Card", inventory)) {
 				cout << "You lost! You were fried by the laser!" << endl;
 				break;
 		}
@@ -157,10 +157,11 @@ bool containsItem(char* itemName, vector<Item*> inventory) {
 }
 //if requested item is present, removes item from the room and adds it to inventory
 void goRoom(Room*& currentRoom) {
-	char* input;
+	char input[80];
 		cout << "Which direction (N, E, S, W)  would you like to go?" << flush;
 		cin >> input;
 		if(!strcmp(input, "N")) {
+			cout << currentRoom->getExit(0)->getName();
 			currentRoom = currentRoom->getExit(0);
 		}
 		else if(!strcmp(input, "E")) {
@@ -172,8 +173,6 @@ void goRoom(Room*& currentRoom) {
 		else if(!strcmp(input, "W")) {
 			currentRoom = currentRoom->getExit(3);
 		}
-
-	cin.ignore();
 }
 //parses the command
 int parseCommand(char* input) {
