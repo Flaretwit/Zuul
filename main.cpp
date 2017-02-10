@@ -13,13 +13,16 @@ using namespace std;
 int parseCommand(char* input);
 void goRoom(Room*& currentRoom);
 bool containsItem(char* itemName, vector<Item*> inventory);
+void pickUp(Room*& currentRoom, vector<Item*> &inventory);
+Item* removeFrom(char* itemName, vector<Item*> &inventory);
+void drop(Room*& currentRoom, vector<Item*> &inventory);
 int main() {
 	vector<Item*> inventory;
 	vector<Room*> rooms;
 	bool done = false;
 	cout << "Welcome to Zuul Adventure, a C++ version of Zuul in Java" << endl;
 	cout << "You have twenty turns to get to the exit, but where is it?" << endl;
-
+	//Initalizes rooms
 	Room* start = new Room((char*)"Lobby",(char*) "You are in a lobby. The alarms appear to be activated. You hear footsteps. What do you do, you are being captured. Escape while you still can!");
 	Room *closet = new Room((char*)"The Closet",(char*) "Seems like any old janitorial closet, or is it?");
 	Room *foodstorage = new Room((char*)"Pantry",(char*) "Looks like you're in the pantry of a restaurant. Lots of yummy food");
@@ -64,6 +67,24 @@ int main() {
 	pub->setExit(0, diningTables);
 	pub->setExit(3, restarea);
 	restarea->setExit(1, pub);
+	//Sets items
+	Item* keycard = new Item();
+	Item* fishingtwine = new Item();
+	Item* cup = new Item();
+	Item* plate = new Item();
+	Item* card = new Item();
+
+	card->name = (char*)"Card";
+	cup->name =(char*) "Cup";
+	plate->name = (char*)"Plate";
+	keycard->name = (char*) "Keycard";
+	fishingtwine->name = (char*)"Fishing Twine";
+	closet->addItem(keycard);
+	closet->addItem(cup);
+	supplyroom->addItem(keycard);
+	diningTables->addItem(plate);
+	foodstorage->addItem(fishingtwine);
+	//adds all the rooms to the vector
 	rooms.push_back(start);
 	rooms.push_back(closet);
 	rooms.push_back(foodstorage);
@@ -79,28 +100,10 @@ int main() {
 	rooms.push_back(stall3);
 	rooms.push_back(pub);
 	rooms.push_back(restarea);
-	Item* keycard = new Item();
-	Item* fishingtwine = new Item();
-	Item* cup = new Item();
-	Item* plate = new Item();
-	Item* card = new Item();
-
-	card->name == "Card";
-	cup->name, "Cup";
-	plate->name, "Plate";
-	keycard->name, "Keycard";
-	fishingtwine->name, "Fishing Twine";
-	closet->addItem(keycard);
-	closet->addItem(cup);
-	supplyroom->addItem(keycard);
-	diningTables->addItem(plate);
-	foodstorage->addItem(fishingtwine);
 
 	int turncount = 0;
 	Room* currentRoom = start;
 	cout << currentRoom->getDescription() << endl;
-
-	cout << "sysout" << currentRoom->getExit(0)->getName() <<endl;
 	while(!done) {
 		//checks conditions for win or loss.
 		if(turncount >= 20) {
@@ -108,11 +111,12 @@ int main() {
 			cout << "Score: FAILURE" << endl;
 			break;
 		}
-		if(!strcmp(currentRoom->getExit(1)->getName(), "Door with Dangerous Looking Scanner")
-			&& !containsItem((char*)"Key Card", inventory)) {
+		if(currentRoom->getExit(1) != NULL) {
+		if(!strcmp(currentRoom->getName(), "Door with Dangerous Looking Scanner")
+			&& !containsItem((char*)"Keycard", inventory)) {
 				cout << "You lost! You were fried by the laser!" << endl;
 				break;
-		}
+		}}
 		if(!strcmp(currentRoom->getName(), "Pub")) {
 			cout << "You won the game in " << turncount << " turns!"<<endl;
 			break;
@@ -128,24 +132,75 @@ int main() {
 			case EXITS:
 				for(int i = 0; i < 4; i++) {
 					switch(i) {
-						case 0: cout << "NORTH: "; break;
+						case 0: cout << "NORTH: " ; break;
 						case 1: cout << "EAST: "; break;
 						case 2: cout << "SOUTH: "; break;
 						case 3: cout << "WEST: "; break;
 					}
-					cout << currentRoom->getExit(i)->getName()<<endl;
+					if(currentRoom->getExit(i) != NULL) {
+					cout << currentRoom->getExit(i)->getName()<< endl;
+					}
+					else {
+						cout << endl;
+					}
 				}
 				break;
 			case GO:
 				goRoom(currentRoom);
-				cout << currentRoom->getDescription() << endl;
+				cout << currentRoom->getName() << flush;
+				cout << ": " << currentRoom->getDescription() << endl;
 				turncount++;
+				break;
+			case PICKUP:
+				pickUp(currentRoom, inventory);
+				break;
+			case DROP:
+				drop(currentRoom, inventory);
 				break;
 		}
 	}
 	return 0;
+}
+void drop(Room*&currentRoom, vector<Item*>& inventory) {
+	cout << "The following items are in your inventory: " << endl;
+	for (int i = 0; i < inventory.size(); i++) {
+			cout << inventory.at(i)->name << endl;
+	}
+	cout << "What item would you like to drop?" << endl;
+	char input[80];
+	cin >> input;
+	Item* temp = new Item();
+	if((temp = removeFrom(input, inventory)) != NULL) {
+		currentRoom->itemList.push_back(temp);
+		return;
+	}
+	cout << "That item doesn't exist in your inventory." << endl;
+}
+//picks up an item
+void pickUp(Room*&currentRoom, vector<Item*>& inventory) {
+	if(currentRoom->hasItems()) {
+	cout << "The following items are in the room: " << endl;
+	for (int i = 0; i < currentRoom->itemList.size(); i++) {
+			cout << currentRoom->itemList.at(i)->name << endl;
+	}
+	cout << "What item would you like to pick up?" << endl;
+	char input[80];
+	cin >> input;
+
+	Item* temp = new Item();
+	if((temp = currentRoom->removeItem(input)) != NULL) {
+		inventory.push_back(temp);
+		return;
+	}
+	cout << "That item doesn't exist in the room." << endl;
+	return;
+} else {
+	cout << "No items in the Room to pick up. " << endl;
+}
+
 
 }
+
 //checks if inventory contains said item.
 bool containsItem(char* itemName, vector<Item*> inventory) {
   for (int i = 0; i < inventory.size(); i++) {
@@ -161,7 +216,6 @@ void goRoom(Room*& currentRoom) {
 		cout << "Which direction (N, E, S, W)  would you like to go?" << flush;
 		cin >> input;
 		if(!strcmp(input, "N")) {
-			cout << currentRoom->getExit(0)->getName();
 			currentRoom = currentRoom->getExit(0);
 		}
 		else if(!strcmp(input, "E")) {
@@ -192,4 +246,15 @@ int parseCommand(char* input) {
 	else {
 		return 0;
 	}
+}
+
+Item* removeFrom(char* itemName, vector<Item*> &inventory) {
+  for (int i = 0; i < inventory.size(); i++) {
+    if (!strcasecmp(itemName, inventory.at(i)->name)) {
+      Item* returnedItem = inventory.at(i);
+      inventory.erase(inventory.begin() + i);
+      return returnedItem;
+    }
+  }
+  return NULL;
 }

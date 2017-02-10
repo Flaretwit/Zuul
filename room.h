@@ -21,9 +21,10 @@ class Room {
   void addItem(Item* newItem);
   Item* removeItem(char* itemName);
   bool hasItems();
+  vector<Item*> itemList;
  private:
   char* description;
   char* name;
   map<int, Room*> exitMap;
-  vector<Item*> itemList;
+
 };
