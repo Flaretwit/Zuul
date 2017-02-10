@@ -1,3 +1,6 @@
+//Zuul by Ke Shen 2/10/2017. Slightly late.
+//Main file with initalization of rooms, items and methods.
+
 #include "room.h"
 using namespace std;
 
@@ -12,7 +15,7 @@ using namespace std;
 
 int parseCommand(char* input);
 void goRoom(Room*& currentRoom);
-bool containsItem(char* itemName, vector<Item*> inventory);
+bool containsItem(cha	r* itemName, vector<Item*> inventory);
 void pickUp(Room*& currentRoom, vector<Item*> &inventory);
 Item* removeFrom(char* itemName, vector<Item*> &inventory);
 void drop(Room*& currentRoom, vector<Item*> &inventory);
